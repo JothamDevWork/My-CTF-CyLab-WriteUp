@@ -36,10 +36,22 @@ Common template engines vulnerable to SSTI include **Jinja2** (Python), **Twig**
 
 ![steps](Images/SSTI.png)
 
-Detect The SSTI vulnerability.
+Detect SSTI vulnerability potential.
 The payload I used to Identify if there is SSTI vulnerability potential is {{7*7}}
 
 Identify The Terminal Engine:
+![steps](Images/SSTI1.png)
+1.I started at {{7*7}} ouputs 49
+![steps](Images/1.png) ![steps](Images/2.png)
+2.then {{7*'7'}} outputs 49
+3.then I choose Jinja2
+
+I read about Jinja2 syntax and since I never have done this before used Claude to better underderstand and get the syntax I needed
+
+Here's the syntax in order with explanation
+
+Sources:
+https://hacktricks.wiki/en/pentesting-web/ssti-server-side-template-injection/jinja2-ssti.html
 
 https://portswigger.net/web-security/server-side-template-injection#constructing-a-server-side-template-injection-attack
 
